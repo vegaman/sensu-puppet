@@ -53,14 +53,16 @@ class sensu::plugins (
   if $_manage_repo {
     include ::sensu::repo::community
     $package_require = [Class['::sensu::repo::community']] + $::sensu::os_package_require
+    package { 'sensu-plugins-ruby':
+      ensure  => $package_ensure,
+      name    => $package_name,
+      require => $package_require,
+    }
   } else {
-    $package_require = undef
-  }
-
-  package { 'sensu-plugins-ruby':
-    ensure  => $package_ensure,
-    name    => $package_name,
-    require => $package_require,
+    package { 'sensu-plugins-ruby':
+      ensure  => $package_ensure,
+      name    => $package_name,
+    }
   }
 
   ensure_packages($dependencies)
